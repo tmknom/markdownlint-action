@@ -1,1 +1,1 @@
-# markdownlint-action
+# markdownlint for GitHub Actions
