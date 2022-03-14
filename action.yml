@@ -1,0 +1,39 @@
+name: markdownlint
+description: Lint markdown with markdownlint.
+
+inputs:
+  paths:
+    default: "**/*.md"
+    required: false
+    description: "Paths to target: [file|dir|glob]"
+  config:
+    default: ""
+    required: false
+    description: "Path to a configuration file."
+
+runs:
+  using: composite
+
+  steps:
+    - name: Install
+      shell: bash
+      run: |
+        sudo npm install -g markdownlint-cli
+
+    - name: Display version
+      shell: bash
+      run: |
+        markdownlint --version
+
+    - name: Run markdownlint
+      shell: bash
+      env:
+        PATHS: ${{ inputs.paths }}
+        CONFIG: ${{ inputs.config }}
+      run: |
+        markdownlint --dot --config "${CONFIG}" "${PATHS}"
+
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#branding
+branding:
+  icon: "align-left"
+  color: "green"
