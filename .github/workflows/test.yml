@@ -1,0 +1,32 @@
+name: Test
+on:
+  push:
+    branches:
+      - test-composite-action
+  pull_request:
+    paths:
+      - "action.yml"
+      - ".github/workflows/test.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Composite Action
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Test default inputs
+        uses: ./
+      - name: Test with paths
+        uses: ./
+        with:
+          paths: "README.md"
+      - name: Test with config
+        uses: ./
+        with:
+          config: ".github/.markdownlint.yml"
